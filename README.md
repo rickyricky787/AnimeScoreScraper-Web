@@ -1,3 +1,3 @@
 # AnimeScoreScraper-Web
 
-Site at anime-scores.herokuapp.com
+Site at https://anime-scores.herokuapp.com/
