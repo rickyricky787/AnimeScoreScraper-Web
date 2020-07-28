@@ -1,5 +1,5 @@
 from flask import Flask, redirect, url_for, render_template, request
-from animescorescraper import MyAnimeList, AnimePlanet, AniList
+from .animescorescraper import MyAnimeList, AnimePlanet, AniList
 
 app = Flask(__name__)
 
