@@ -1,0 +1,110 @@
+{% extends "home.html" %}
+{% block content %}
+
+    {% if "N/A" in anime1.score and "N/A" in anime2.score and "N/A" in anime3.score %}
+    <div class="card mb-3 mx-auto" style="opacity: 80%; max-width: 58rem;">
+        <div class="card-body" style="text-align: center;">
+          <h5 class="card-title">This might be an upcoming anime</h5>
+        </div>
+    </div>
+
+    {% else %}
+    <div class="card mb-3 mx-auto" style="opacity: 80%; max-width: 58rem;">
+        <div class="card-body" style="text-align: center;">
+            <h5 class="card-title">Not the right one?</h5>
+            <p class="card-text">Try using a different name for said anime</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="card-deck row justify-content-center">
+        <div class="card border-dark mb-3" style="max-width: 18rem; min-width: 18rem;">
+            <div class="card-header" style="text-align: center;">MyAnimeList</div>
+            <img class="card-img-top" src="{{anime1.image}}" alt="Image from MyAnimeList";/>
+            <div class="card-body">
+                {% if "None" not in anime1.title %}
+                <a href="{{anime1.link}}" target="_blank">
+                    <h5 class="card-title">{{anime1.title}}</h5>
+                </a>
+                {% else %}
+                <h5 class="card-title">{{anime1.title}}</h5>
+                {% endif %}
+
+                {% if "N/A" not in anime1.score %}
+                <p class="card-text">Score: {{anime1.score}} out of 10</p>
+                <p class="card-text">Scaled Score: {{anime1.conv_score}} out of 100</p>
+                {% else %}
+                <p class="card-text">Score: {{anime1.score}}</p>
+                <p class="card-text">Scaled Score: {{anime1.conv_score}}</p>
+                {% endif %}
+
+                <p class="card-text">Votes: {{anime1.votes}}</p>
+            </div>
+        </div>
+        <div class="card border-dark mb-3" style="max-width: 18rem; min-width: 18rem;">
+            <div class="card-header" style="text-align: center;">AnimePlanet</div>
+            <img class="card-img-top" src="{{anime2.image}}" alt="Image from AnimePlanet"/>
+            <div class="card-body">
+                {% if "None" not in anime2.title %}
+                <a href="{{anime2.link}}" target="_blank">
+                    <h5 class="card-title">{{anime2.title}}</h5>
+                </a>
+                {% else %}
+                <h5 class="card-title">{{anime2.title}}</h5>
+                {% endif %}
+
+                {% if "N/A" not in anime1.score %}
+                <p class="card-text">Score: {{anime2.score}} out of 5</p>
+                <p class="card-text">Scaled Score: {{anime2.conv_score}} out of 100</p>
+                {% else %}
+                <p class="card-text">Score: {{anime2.score}}</p>
+                <p class="card-text">Scaled Score: {{anime2.conv_score}}</p>
+                {% endif %}
+
+                <p class="card-text">Votes: {{anime2.votes}}</p>
+            </div>
+        </div>
+        <div class="card border-dark mb-3" style="max-width: 18rem; min-width: 18rem;">
+            <div class="card-header" style="text-align: center;">AniList</div>
+            <img class="card-img-top" src="{{anime3.image}}" alt="Image from AniList"/>
+            <div class="card-body">
+                {% if "None" not in anime3.title %}
+                <a href="{{anime3.link}}" target="_blank">
+                    <h5 class="card-title">{{anime3.title}}</h5>
+                </a>
+                {% else %}
+                    <h5 class="card-title">{{anime3.title}}</h5>
+                {% endif %}
+
+                {% if "N/A" not in anime1.score %}
+                <p class="card-text">Score: {{anime3.score}} out of 100</p>
+                <p class="card-text">Scaled Score: {{anime3.conv_score}} out of 100</p>
+                {% else %}
+                <p class="card-text">Score: {{anime3.score}}</p>
+                <p class="card-text">Scaled Score: {{anime3.conv_score}}</p>
+                {% endif %}
+
+                <p class="card-text">Votes: {{anime3.votes}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="padding-top: 8mm;"></div>
+    <div class="card mb-3" style="opacity: 80%;">
+        <div class="card-body">
+            <div style="text-align: center;">
+                <p>Scaled scores does not appear on thier websites. These are just converted 
+                    scales for easy comparisons</p>
+                <p>Remember, this is a scraper, so do not overuse it to prevent your IP address being blocked</p>
+                <p>If an anime does not appear, it could either mean:</p>
+                <ul style="display: inline-block; text-align: left;">
+                    <li>One of the sites is down</li>
+                    <li>Code for scraping needs updating</li>
+                    <li>Scraper failed to locate anime webpage</li>
+                    <li>Site does not have the anime you are looking for</li>
+                    <li> You might have made many searches repeatedly</li>
+                </ul>
+          </div>
+    </div>
+
+{% endblock %}

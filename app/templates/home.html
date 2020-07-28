@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <title>Anime Score Scraper</title>
+    <style>
+        body
+        {
+            background-color: rgb(161, 186, 202);
+        }
+        img
+        {
+            float: left;
+            width:  225px;
+            height: 400px;
+            object-fit: cover;
+        }
+        .form-control:focus {
+            border-color: #ffffff00;
+            box-shadow: inset 0 1px 1px #ffffff00, 0 0 8px #ffffff00;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div style="padding-top: 8mm;"></div>
+        <div class="card mb-3" style="opacity: 80%;">
+            <div class="card-body">
+                <div style="text-align: center;">
+                    <h1 title="Title">Anime Score Scraper</h1>
+                    <p>Search scores from MyAnimeList, Anime-Planet, and AniList in one place!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mx-auto" style="padding-bottom: 10mm;">
+            <div class="row justify-content-center">
+                <form class="form-inline" action="{{url_for('results', qry=query)}}" method="POST">
+                    <input class="form-control mr-sm-2" type="search" name="nm" placeholder="Search" aria-label="Search"/>
+                    <input class="btn btn-outline-dark my-2 my-sm-0 mx-auto" type="submit" value="submit"/>
+                </form>
+            </div>
+        </div>
+        {% block content %}{% endblock %}
+    </div>
+</body>
+
+</html>
