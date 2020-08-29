@@ -8,7 +8,7 @@ import time
 
 # A class that will contain all the data we are looking for; used by functions
 class Data:
-    def __int__(self):
+    def __init__(self):
         self.title = "None"
         self.score = "0.0"
         self.conv_score = "0.0"
@@ -21,7 +21,7 @@ class Data:
 # Input: User inputed "name", "keyword" and "website" of the webpage we plan on scraping
 # Output: The link of the anime webpage (if found), "None" (if not found)
 
-def findLink(name, keyword, website):
+def googleThis(name, keyword, website):
 
     # Function will "google" the anime name, followed by the keyword (ex. Pokemon + MyAnimeList).
     search = name + " " + keyword
@@ -53,9 +53,9 @@ def numToString(anime):
 # To get data from MyAnimeList
 def MyAnimeList(name):
     results = Data()
-    results.link = findLink(name, "MyAnimeList", "myanimelist.net/anime")
+    results.link = googleThis(name, "MyAnimeList", "myanimelist.net/anime")
 
-    # If no link was returned from findLink(), then anime webpage not found
+    # If no link was returned from googleThis(), then anime webpage not found
     if results.link != "None":
         page = requests.get(results.link)
         soup = BeautifulSoup(page.content, "html5lib")
@@ -82,15 +82,9 @@ def MyAnimeList(name):
             else:
                 results.votes = "N/A"
 
-            results.title = soup.find("span", {"itemprop":"name"})
-
-            # To remove alternate title (just return the main one)
-            title_string = str(results.title)
-            if "<br/>" in title_string:
-                results.title = title_string.split('itemprop="name">')[1].split('<br/>')[0]
-            else:
-                results.title = results.title.get_text()
-
+            results.title = soup.find("h1", {"class":"title-name"})
+            results.title = (results.title).get_text()
+            
             results.image = soup.find("img", {"itemprop":"image"})
             results.image = str(results.image)
             results.image = results.image.split('data-src="')[1].split('" ')[0]
@@ -102,7 +96,7 @@ def MyAnimeList(name):
 # To get data from AnimePlanet
 def AnimePlanet(name):
     results = Data()
-    results.link = findLink(name, "Anime Planet", "anime-planet.com/anime")
+    results.link = googleThis(name, "Anime Planet", "anime-planet.com/anime")
 
     # If link has /videos on them, just remove it
     results.link = (results.link).replace("/videos", "")
@@ -148,7 +142,7 @@ def AnimePlanet(name):
 #To get data from AniList
 def AniList(name):
     results = Data()
-    results.link = findLink(name, "AniList", "anilist.co/anime")
+    results.link = googleThis(name, "AniList", "anilist.co/anime")
     if results.link != "None":
         page = requests.get(results.link)
         soup = BeautifulSoup(page.content, "html5lib")
