@@ -1,5 +1,5 @@
 from flask import Flask, redirect, url_for, render_template, request
-from .animescorescraper import MyAnimeList, AnimePlanet, AniList
+from .animescorescraper import *
 
 app = Flask(__name__)
 
@@ -13,9 +13,9 @@ def home():
 
 @app.route("/<qry>")
 def results(qry):
-    search1 = MyAnimeList(qry)
-    search2 = AnimePlanet(qry)
-    search3 = AniList(qry)
+    search1 = MyAnimeListData(MyAnimeListLink(qry))
+    search2 = AnimePlanetData(AnimePlanetLink(qry))
+    search3 = AniListData(AniListLink(qry))
     if request.method == "POST":
         query = request.form["nm"]
         return redirect(url_for("results", qry=query))

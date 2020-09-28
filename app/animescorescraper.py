@@ -8,12 +8,12 @@ import time
 
 # A class that will contain all the data we are looking for; used by functions
 class Data:
-    def __init__(self):
+    def __init__(self, webpage="None"):
         self.title = "None"
         self.score = "0.0"
         self.conv_score = "0.0"
         self.votes = "0.0"
-        self.link = "None"
+        self.link = webpage
         self.image = "None"
 
 
@@ -50,11 +50,14 @@ def numToString(anime):
     anime.conv_score = str(anime.conv_score)
     anime.votes = str(anime.votes)
 
-# To get data from MyAnimeList
-def MyAnimeList(name):
-    results = Data()
-    results.link = googleThis(name, "MyAnimeList", "myanimelist.net/anime")
+# Returns the MyAnimeList link of the anime queried
+def MyAnimeListLink(name):
+    link = googleThis(name, "MyAnimeList", "myanimelist.net/anime")
+    return link
 
+# Retrieves data scraped from MyAnimeList
+def MyAnimeListData(link):
+    results = Data(link)
     # If no link was returned from googleThis(), then anime webpage not found
     if results.link != "None":
         page = requests.get(results.link)
@@ -93,11 +96,14 @@ def MyAnimeList(name):
     time.sleep(1)
     return results
 
-# To get data from AnimePlanet
-def AnimePlanet(name):
-    results = Data()
-    results.link = googleThis(name, "Anime Planet", "anime-planet.com/anime")
+# Returns the AnimePlanet link of the anime queried
+def AnimePlanetLink(name):
+    link = googleThis(name, "Anime Planet", "anime-planet.com/anime")
+    return link
 
+# Retrieves the data scraped from AnimePlanet
+def AnimePlanetData(link):
+    results = Data(link)
     # If link has /videos on them, just remove it
     results.link = (results.link).replace("/videos", "")
     
@@ -115,8 +121,7 @@ def AnimePlanet(name):
                 results.conv_score = "N/A"
             else:
                 results.score = results.score.split(' out')[0]
-                results.conv_score = container.span["style"]
-                results.conv_score = results.conv_score[7:-1]
+                results.conv_score = str('%.2f'%(100 * (float(results.score) / 5)))
             
             container = soup.select_one("div.avgRating")
             if container is not None:
@@ -139,10 +144,14 @@ def AnimePlanet(name):
     time.sleep(1)
     return results
 
-#To get data from AniList
-def AniList(name):
-    results = Data()
-    results.link = googleThis(name, "AniList", "anilist.co/anime")
+# Returns the AniList link of the anime queried
+def AniListLink(name):
+    link = googleThis(name, "AniList", "anilist.co/anime")
+    return link
+
+# Retrieves the data scraped from AniList
+def AniListData(link):
+    results = Data(link)
     if results.link != "None":
         page = requests.get(results.link)
         soup = BeautifulSoup(page.content, "html5lib")
