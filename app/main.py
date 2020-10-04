@@ -1,6 +1,6 @@
 from flask import Flask, redirect, url_for, render_template, request
 from flask_caching import Cache
-from animescorescraper import *
+from .animescorescraper import *
 
 cache = Cache()
 
