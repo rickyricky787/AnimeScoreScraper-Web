@@ -5,23 +5,40 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import time
+from settings import getKeys
 
 # A class that will contain all the data we are looking for; used by functions
 class Data:
-    def __init__(self):
+    def __init__(self, webpage="None"):
         self.title = "None"
         self.score = "0.0"
         self.conv_score = "0.0"
         self.votes = "0.0"
-        self.link = "None"
+        self.link = webpage
         self.image = "None"
 
-
-# Def: Finds the link of the anime webpage in a website (MyAnimeList, Anime Planet, Anilist)
-# Input: User inputed "name", "keyword" and "website" of the webpage we plan on scraping
-# Output: The link of the anime webpage (if found), "None" (if not found)
-
+# Finds the link of the anime webpage using Google Custom Search API
 def googleThis(name, keyword, website):
+    API_KEY, SEARCH_ENGINE_ID = getKeys()
+
+    # Query will look like something like "One Piece AniList"
+    query = name + " " + keyword
+    url = f"https://www.googleapis.com/customsearch/v1?key={API_KEY}&cx={SEARCH_ENGINE_ID}&q={query}&start=1"
+    data = requests.get(url).json()
+    results = data.get("items")
+
+    # We will (hopefully) find the correct link from the links within the first Google search page
+    # The first link the right website (ex. myanimelist.com/anime) will be returned
+    for items in results:
+        link = items.get("link")
+        if website in link:
+            return link
+    
+    return "None"
+
+
+# Finds the link of the anime webpage by scraping Google's search results
+def scrapeGoogle(name, keyword, website):
 
     # Function will "google" the anime name, followed by the keyword (ex. Pokemon + MyAnimeList).
     search = name + " " + keyword
@@ -29,19 +46,14 @@ def googleThis(name, keyword, website):
     soup = BeautifulSoup(page.content, "html5lib")
     links = soup.findAll("a")
  
-    # "links" has first 5 websites found from Google
-    # "search_results" will (hopefully) have the link we want
-    search_results = "None"
-
+    # We will (hopefully) return the correct link within those 5 first searches
     for link in links :
         link_href = link.get("href")
         # If not an image (imgurl) or a snippet (?sa=X), add link to array
         if website in link_href and not "imgurl" in link_href and not "?sa=X" in link_href:
-            search_results = link.get("href").split("?q=")[1].split("&sa=U")[0]
-            break
+            return link.get("href").split("?q=")[1].split("&sa=U")[0]
 
-    time.sleep(1)
-    return search_results
+    return "None"
 
 
 # Function that turns all numbers within data class to a string 
@@ -50,11 +62,14 @@ def numToString(anime):
     anime.conv_score = str(anime.conv_score)
     anime.votes = str(anime.votes)
 
-# To get data from MyAnimeList
-def MyAnimeList(name):
-    results = Data()
-    results.link = googleThis(name, "MyAnimeList", "myanimelist.net/anime")
+# Returns the MyAnimeList link of the anime queried
+def MyAnimeListLink(name):
+    link = googleThis(name, "MyAnimeList", "myanimelist.net/anime")
+    return link
 
+# Retrieves data scraped from MyAnimeList
+def MyAnimeListData(link):
+    results = Data(link)
     # If no link was returned from googleThis(), then anime webpage not found
     if results.link != "None":
         page = requests.get(results.link)
@@ -93,11 +108,14 @@ def MyAnimeList(name):
     time.sleep(1)
     return results
 
-# To get data from AnimePlanet
-def AnimePlanet(name):
-    results = Data()
-    results.link = googleThis(name, "Anime Planet", "anime-planet.com/anime")
+# Returns the AnimePlanet link of the anime queried
+def AnimePlanetLink(name):
+    link = googleThis(name, "Anime Planet", "anime-planet.com/anime")
+    return link
 
+# Retrieves the data scraped from AnimePlanet
+def AnimePlanetData(link):
+    results = Data(link)
     # If link has /videos on them, just remove it
     results.link = (results.link).replace("/videos", "")
     
@@ -115,8 +133,7 @@ def AnimePlanet(name):
                 results.conv_score = "N/A"
             else:
                 results.score = results.score.split(' out')[0]
-                results.conv_score = container.span["style"]
-                results.conv_score = results.conv_score[7:-1]
+                results.conv_score = str('%.2f'%(100 * (float(results.score) / 5)))
             
             container = soup.select_one("div.avgRating")
             if container is not None:
@@ -139,10 +156,14 @@ def AnimePlanet(name):
     time.sleep(1)
     return results
 
-#To get data from AniList
-def AniList(name):
-    results = Data()
-    results.link = googleThis(name, "AniList", "anilist.co/anime")
+# Returns the AniList link of the anime queried
+def AniListLink(name):
+    link = googleThis(name, "AniList", "anilist.co/anime")
+    return link
+
+# Retrieves the data scraped from AniList
+def AniListData(link):
+    results = Data(link)
     if results.link != "None":
         page = requests.get(results.link)
         soup = BeautifulSoup(page.content, "html5lib")
