@@ -5,6 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import time
+from settings import getKeys
 
 # A class that will contain all the data we are looking for; used by functions
 class Data:
@@ -16,12 +17,28 @@ class Data:
         self.link = webpage
         self.image = "None"
 
-
-# Def: Finds the link of the anime webpage in a website (MyAnimeList, Anime Planet, Anilist)
-# Input: User inputed "name", "keyword" and "website" of the webpage we plan on scraping
-# Output: The link of the anime webpage (if found), "None" (if not found)
-
+# Finds the link of the anime webpage using Google Custom Search API
 def googleThis(name, keyword, website):
+    API_KEY, SEARCH_ENGINE_ID = getKeys()
+
+    # Query will look like something like "One Piece AniList"
+    query = name + " " + keyword
+    url = f"https://www.googleapis.com/customsearch/v1?key={API_KEY}&cx={SEARCH_ENGINE_ID}&q={query}&start=1"
+    data = requests.get(url).json()
+    results = data.get("items")
+
+    # We will (hopefully) find the correct link from the links within the first Google search page
+    # The first link the right website (ex. myanimelist.com/anime) will be returned
+    for items in results:
+        link = items.get("link")
+        if website in link:
+            return link
+    
+    return "None"
+
+
+# Finds the link of the anime webpage by scraping Google's search results
+def scrapeGoogle(name, keyword, website):
 
     # Function will "google" the anime name, followed by the keyword (ex. Pokemon + MyAnimeList).
     search = name + " " + keyword
@@ -29,19 +46,14 @@ def googleThis(name, keyword, website):
     soup = BeautifulSoup(page.content, "html5lib")
     links = soup.findAll("a")
  
-    # "links" has first 5 websites found from Google
-    # "search_results" will (hopefully) have the link we want
-    search_results = "None"
-
+    # We will (hopefully) return the correct link within those 5 first searches
     for link in links :
         link_href = link.get("href")
         # If not an image (imgurl) or a snippet (?sa=X), add link to array
         if website in link_href and not "imgurl" in link_href and not "?sa=X" in link_href:
-            search_results = link.get("href").split("?q=")[1].split("&sa=U")[0]
-            break
+            return link.get("href").split("?q=")[1].split("&sa=U")[0]
 
-    time.sleep(1)
-    return search_results
+    return "None"
 
 
 # Function that turns all numbers within data class to a string 
