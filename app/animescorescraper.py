@@ -5,7 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import time
-from settings import getKeys
+from .settings import *
 
 # A class that will contain all the data we are looking for; used by functions
 class Data:
