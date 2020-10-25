@@ -20,20 +20,29 @@ class Data:
 # Finds the link of the anime webpage using Google Custom Search API
 def googleThis(name, keyword, website):
     API_KEY, SEARCH_ENGINE_ID = getKeys()
-
     # Query will look like something like "One Piece AniList"
     query = name + " " + keyword
+    return googleThisHelper(query, website, API_KEY, SEARCH_ENGINE_ID)
+
+def googleThisHelper(query, website, API_KEY, SEARCH_ENGINE_ID):
     url = f"https://www.googleapis.com/customsearch/v1?key={API_KEY}&cx={SEARCH_ENGINE_ID}&q={query}&start=1"
     data = requests.get(url).json()
     results = data.get("items")
 
-    # We will (hopefully) find the correct link from the links within the first Google search page
-    # The first link the right website (ex. myanimelist.com/anime) will be returned
-    for items in results:
-        link = items.get("link")
-        if website in link:
-            return link
-    
+    if results != None:
+        # We will first check if there is suggested query that Google provides
+        # If there is, we redo this function again with said query
+        if data.get("spelling") != None:
+            corrected_query = data.get("spelling").get("correctedQuery")
+            return googleThisHelper(corrected_query, website, API_KEY, SEARCH_ENGINE_ID)
+        else:
+            # We will (hopefully) find the correct link from the links within the first Google search page
+            # The first link the right website (ex. myanimelist.com/anime) will be returned
+            for items in results:
+                link = items.get("link")
+                if website in link:
+                    return link
+
     return "None"
 
 
@@ -116,10 +125,11 @@ def AnimePlanetLink(name):
 # Retrieves the data scraped from AnimePlanet
 def AnimePlanetData(link):
     results = Data(link)
-    # If link has /videos on them, just remove it
-    results.link = (results.link).replace("/videos", "")
     
     if results.link != "None":
+        # If link has /videos on them, just remove it
+        results.link = (results.link).replace("/videos", "")
+
         page = requests.get(results.link)
         soup = BeautifulSoup(page.content, "html5lib")
         element_check = soup.select_one("div.avgRating")
