@@ -1,22 +1,6 @@
 {% extends "home.html" %}
 {% block content %}
 
-    {% if "N/A" in anime1.score and "N/A" in anime2.score and "N/A" in anime3.score %}
-    <div class="card mb-3 mx-auto" style="opacity: 80%; max-width: 58rem;">
-        <div class="card-body" style="text-align: center;">
-          <h5 class="card-title">This might be an upcoming anime</h5>
-        </div>
-    </div>
-
-    {% else %}
-    <div class="card mb-3 mx-auto" style="opacity: 80%; max-width: 58rem;">
-        <div class="card-body" style="text-align: center;">
-            <h5 class="card-title">Not the right one?</h5>
-            <p class="card-text">Try using a different name for said anime</p>
-        </div>
-    </div>
-    {% endif %}
-
     <div class="card-deck row justify-content-center">
         <div class="card border-dark mb-3" style="max-width: 18rem; min-width: 18rem;">
             <div class="card-header" style="text-align: center;">MyAnimeList</div>
@@ -88,6 +72,22 @@
             </div>
         </div>
     </div>
+
+    {% if "N/A" in anime1.score and "N/A" in anime2.score and "N/A" in anime3.score %}
+    <div class="card mb-3 mx-auto" style="opacity: 80%; max-width: 58rem;">
+        <div class="card-body" style="text-align: center;">
+          <h5 class="card-title">This might be an upcoming anime</h5>
+        </div>
+    </div>
+
+    {% else %}
+    <div class="card mb-3 mx-auto" style="opacity: 80%; max-width: 58rem;">
+        <div class="card-body" style="text-align: center;">
+            <h5 class="card-title">Not the right one?</h5>
+            <p class="card-text">Try using a different name for said anime</p>
+        </div>
+    </div>
+    {% endif %}
 
     <div style="padding-top: 8mm;"></div>
     <div class="card mb-3" style="opacity: 80%;">
