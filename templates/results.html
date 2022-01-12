@@ -1,0 +1,54 @@
+{% extends "index.html" %}
+{% block content %}
+    <div class="container">
+        <div class="card-deck row justify-content-center justify-content-lg-between">
+            {% for data in site_data %}
+            <div class="card border-dark mb-3">
+                <div class="card-header">{{data.site_name}}</div>
+                <img class="card-img-top" src="{{data.image}}" alt="Image from {{data.site_name}}";/>
+                <div class="card-body">
+            
+                    {% if "None" not in data.title %}
+                    <a href="#" target="_blank">
+                        <h5 class="card-title">{{data.title}}</h5>
+                    </a>
+                    {% else %}
+                    <h5 class="card-title">{{data.title}}</h5>
+                    {% endif %}
+    
+                    {% if "N/A" not in data.score %}
+                    <p class="card-text">Score: {{data.score}} out of 10</p>
+                    <p class="card-text">Scaled Score: {{data.conv_score}} out of 100</p>
+                    {% else %}
+                    <p class="card-text">Score: {{data.score}}</p>
+                    <p class="card-text">Scaled Score: {{data.conv_score}}</p>
+                    {% endif %}
+    
+                    <p class="card-text">Votes: {{data.votes}}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card mb-3">
+            <div class="card-body">
+                <p>Scaled scores does not appear on thier websites. These are just converted 
+                    scales for easy comparisons</p>
+                <p>The app is now currently limited to about <b>30 search queries per day</b></p>
+                <p>If an anime does not appear, it could either mean:</p>
+                <ul>
+                    <li>You might need to rephrase the anime title</li>
+                    <li>The anime you've searched is not yet released</li>
+                    <li>One of the sites is down</li>
+                    <li>Daily query limit has been reached</li>
+                    <li>Code for scraping needs updating</li>
+                    <li>Scraper failed to locate anime webpage</li>
+                    <li>Site does not have the anime you are looking for</li>
+                </ul>
+        </div>
+    </div>
+
+
+{% endblock %}

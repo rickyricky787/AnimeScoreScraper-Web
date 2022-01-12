@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta&family=Pacifico&display=swap" rel="stylesheet">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <title>Anime Score Scraper</title>
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron jumbotron-fluid">
+                <h1 class="display-5">Anime Score Scraper</h1>
+                <p class="lead">Search scores from MyAnimeList, Anime-Planet, and AniList in one place!</p>
+                <form class="input-group mb-3" action="{{url_for('results', anime_name=query)}}" method="POST">
+                    <input class="form-control" type="search" name="nm" placeholder="Search" aria-label="Search"/>
+                    <button class="btn btn-outline-dark" type="submit"> Submit </button>
+                </form>
+        </div>
+    </div>
+    {% block content %}{% endblock %}
+
+
+
+
+</body>
+</html>

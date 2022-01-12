@@ -1,0 +1,46 @@
+* {
+    font-family: 'Mukta', sans-serif;
+  }
+  
+  body {
+    background-color: rgb(116, 194, 243);
+  }
+  
+  .jumbotron {
+    background:transparent;
+    padding-bottom: 1rem;
+  }
+  
+  h1 {
+    font-family: 'Pacifico', cursive;
+  }
+  
+  img
+  {
+    float: left;
+    width:  225px;
+    height: 400px;
+    object-fit: cover;
+  }
+  .form-control:focus {
+    border-color: #ffffff00;
+    box-shadow: inset 0 1px 1px #ffffff00, 0 0 8px #ffffff00;
+  }
+  
+  .card-deck .card {
+    max-width: 18rem;
+    min-width: 18rem;
+  }
+  
+  .card-deck .card .card-header {
+    text-align: center;
+  }
+  
+  .card .card-body {
+    text-align: center;
+  }
+  
+  .card .card-body ul {
+    display: inline-block;
+    text-align: left;
+  }
