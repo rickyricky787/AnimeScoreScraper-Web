@@ -16,7 +16,7 @@ def home():
     else:
         return render_template("index.html")
 
-@app.route("/<anime_name>", methods=["GET", "POST"])
+@app.route("/results", methods=["GET", "POST"])
 @cache.cached(timeout=120)
 def results(anime_name):
     site1_data = MyAnimeListData(anime_name)
