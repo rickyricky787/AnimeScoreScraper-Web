@@ -1,5 +1,7 @@
 import requests
 from .settings import *
+# Uncomment the following if you doon't want to use Google Search API (literal scraping)
+# from bs4 import BeautifulSoup
 
 
 # Finds the link of the anime webpage using Google Custom Search API
