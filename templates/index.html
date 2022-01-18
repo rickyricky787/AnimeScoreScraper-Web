@@ -27,8 +27,8 @@
         <div class="jumbotron jumbotron-fluid">
                 <h1 class="display-5">Anime Score Scraper</h1>
                 <p class="lead">Search scores from MyAnimeList, Anime-Planet, and AniList in one place!</p>
-                <form class="input-group mb-3" action="{{url_for('results', anime_name=query)}}" method="POST">
-                    <input class="form-control" type="search" name="nm" placeholder="Search" aria-label="Search"/>
+                <form method="POST" class="input-group mb-3" action={{ url_for("results") }} enctype="multipart/form-data">
+                    <input class="form-control" type="search" name="anime_query" placeholder="Search" aria-label="Search"/>
                     <button class="btn btn-outline-dark" type="submit"> Submit </button>
                 </form>
         </div>

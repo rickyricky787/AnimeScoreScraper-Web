@@ -9,7 +9,7 @@
                 <div class="card-body">
             
                     {% if "None" not in data.title %}
-                    <a href="#" target="_blank">
+                    <a href="{{data.link}}" target="_blank">
                         <h5 class="card-title">{{data.title}}</h5>
                     </a>
                     {% else %}
@@ -17,7 +17,7 @@
                     {% endif %}
     
                     {% if "N/A" not in data.score %}
-                    <p class="card-text">Score: {{data.score}} out of 10</p>
+                    <p class="card-text">Score: {{data.score}} out of {{data.max_score}}</p>
                     <p class="card-text">Scaled Score: {{data.conv_score}} out of 100</p>
                     {% else %}
                     <p class="card-text">Score: {{data.score}}</p>
