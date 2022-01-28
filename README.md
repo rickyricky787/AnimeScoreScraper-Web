@@ -10,5 +10,5 @@ Demo Link: https://anime-scores.herokuapp.com/
 - Deployed on Heroku
 
 ## Preview
-<img src="images/animepic.png" align="left" width="600" >
+<img src="images/animepic.png" align="left" width="500" >
 
